@@ -1,8 +1,8 @@
 #!/bin/sh
 
 cd bento/packer
-packer build -only=parallels-iso -var 'mirror=file:///Users/ieu94897/Sites/ISOs/CentOS/' centos-6.6-x86_64.json
-cd ../..
+packer build -only=parallels-iso centos-6.6-x86_64.json -machine-readable > packer.out
+BOX=$(awk '/provider box/ { print $6}' packer.out)
 vagrant box remove parallels/centos-6.6
-vagrant box add bento/builds/parallels/centos-6.6_chef-latest.box --name "parallels/centos-6.6"
-rm bento/builds/parallels/centos-6.6_chef-latest.box
+vagrant box add $BOX --name "parallels/centos-6.6"
+rm $BOX
